@@ -20,6 +20,8 @@ Setup scripts for a fresh centos 6.5 install.
 > 10.8.0.1 is the server's address once your connected via VPN.. All ports are open when connected via VPN.
 > Connected clients through VPN start at 10.8.0.2
 
+##### How To Use Quickly
+
 ```
 yum install -y wget
 cd /
