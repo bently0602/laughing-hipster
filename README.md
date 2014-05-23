@@ -22,10 +22,19 @@ Setup scripts for a fresh centos 6.5 install.
 
 ##### How To Use Quickly
 
+###### Base
 ```Shell
 yum install -y wget
 cd /
 wget https://raw.githubusercontent.com/bently0602/laughing-hipster/master/script-deploy-remote.sh
 chmod +x script-deploy-remote.sh
 ./script-deploy-remote.sh
+```
+
+###### Desktop and VNC
+```Shell
+cd /
+wget https://raw.githubusercontent.com/bently0602/laughing-hipster/master/script-desktop-vnc.sh
+chmod +x script-desktop-vnc.sh
+./script-desktop-vnc.sh
 ```
