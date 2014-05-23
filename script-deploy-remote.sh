@@ -247,32 +247,46 @@ yum -y  --enablerepo epel install openvpn easy-rsa
 
 useradd openvpn
 
-cp /usr/share/doc/openvpn-2.3.2/sample/sample-config-files/server.conf /etc/openvpn
-find /etc/openvpn/server.conf -type f -exec sed -i 's/;push "redirect-gateway def1 bypass-dhcp"/push "redirect-gateway def1 bypass-dhcp"/g' {} \;
-find /etc/openvpn/server.conf -type f -exec sed -i 's/;push "dhcp-option DNS 208.67.222.222"/push "dhcp-option DNS 208.67.222.222"/g' {} \;
-find /etc/openvpn/server.conf -type f -exec sed -i 's/;push "dhcp-option DNS 208.67.220.220"/push "dhcp-option DNS 208.67.220.220"/g' {} \;
-find /etc/openvpn/server.conf -type f -exec sed -i 's/;user nobody/user nobody/g' {} \;
-find /etc/openvpn/server.conf -type f -exec sed -i 's/;group nobody/group nobody/g' {} \;
-find /etc/openvpn/server.conf -type f -exec sed -i 's/dh dh1024.pem/dh dh.pem/g' {} \;
-find /etc/openvpn/server.conf -type f -exec sed -i 's/;tls-auth ta.key 0 # This file is secret/tls-auth ta.key 0/g' {} \;
-find /etc/openvpn/server.conf -type f -exec sed -i 's/port 1194/port 1132/g' {} \;
-find /etc/openvpn/server.conf -type f -exec sed -i 's/;client-to-client/client-to-client/g' {} \;
+echo '
+port 1132
+proto udp
+dev tun
+ca ca.crt
+cert server.crt
+key server.key
+dh dh.pem
+server 10.8.0.0 255.255.255.0
+ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 208.67.222.222"
+push "dhcp-option DNS 208.67.220.220"
+client-to-client
+duplicate-cn
+keepalive 10 120
+tls-auth ta.key 0
+cipher AES-128-CBC
+comp-lzo
+user nobody
+group nobody
+persist-key
+persist-tun
+status openvpn-status.log
+verb 3
+' >> /etc/openvpn/server.conf
 
 mkdir -p /etc/openvpn/easy-rsa/keys
 cp -rf /usr/share/easy-rsa/2.0 /etc/openvpn/easy-rsa
 
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_COUNTRY="US"/export KEY_COUNTRY="US"/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_PROVINCE="CA"/export KEY_PROVINCE="CA"/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_CITY="SanFrancisco"/export KEY_CITY="SanFrancisco"/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_ORG="Fort-Funston"/export KEY_ORG="Fort-Funston"/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_EMAIL="me@myhost.mydomain"/export KEY_EMAIL="me@myhost.mydomain"/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_EMAIL=mail@host.domain/export KEY_EMAIL=mail@host.domain/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_CN=changeme/export KEY_CN=changeme/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_NAME=changeme/export KEY_NAME=changeme/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_OU=changeme/export KEY_OU=changeme/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export PKCS11_MODULE_PATH=changeme/export PKCS11_MODULE_PATH=changeme/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export PKCS11_PIN=1234/export PKCS11_PIN=1234/g' {} \;
-find /etc/openvpn/easy-rsa/2.0/vars -type f -exec sed -i 's/export KEY_SIZE=1024/export KEY_SIZE=1024/g' {} \;
+echo '
+export KEY_SIZE=2048
+export KEY_CN="CommonName"
+export KEY_NAME=changeme
+export KEY_COUNTRY="US"
+export KEY_PROVINCE="CA"
+export KEY_CITY="SanFrancisco"
+export KEY_ORG="LPWEF"
+export KEY_EMAIL="me@myhost.mydomain"
+' >> /etc/openvpn/easy-rsa/2.0/xtravars
 
 #OpenVPN might fail to properly detect the OpenSSL version on CentOS 6. As a precaution, manually copy the required OpenSSL configuration file.
 cp /etc/openvpn/easy-rsa/2.0/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/2.0/openssl.cnf
@@ -287,6 +301,7 @@ find /etc/openvpn/easy-rsa/2.0/pkitool -type f -exec sed -i "s/\$OPENSSL ca \$BA
 
 cd /etc/openvpn/easy-rsa/2.0
 source ./vars
+source ./xtravars
 ./clean-all
 echo '~~~~~Building CA~~~~~'
 ./build-ca
@@ -315,6 +330,7 @@ client
 dev tun
 proto udp
 remote $inetFacingIPaddress 1132
+cipher AES-128-CBC
 resolv-retry infinite
 nobind
 persist-key
