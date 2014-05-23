@@ -22,7 +22,7 @@ Setup scripts for a fresh centos 6.5 install.
 
 ##### How To Use Quickly
 
-```
+```Shell
 yum install -y wget
 cd /
 wget https://raw.githubusercontent.com/bently0602/laughing-hipster/master/script-deploy-remote.sh
