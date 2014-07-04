@@ -4,6 +4,7 @@ echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 echo 'Please enter some configuration!'
 echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 read -s -p "root pw: " rootPassword
+echo ''
 read -s -p 'ssh passphrase: ' sshPassphrase
 echo ''
 echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
@@ -80,7 +81,8 @@ iptables -A INPUT -i eth0 -p tcp --dport 64 -j ACCEPT
 #Allow ports from specifc IP Addresses
 #iptables -A INPUT -p tcp -s 000.000.000.000 -m tcp --dport 22 -j ACCEPT
 
-#allow any established outgoing connections to receive replies from the VPS on the other side of that connection
+# allow any established outgoing connections to receive replies from the
+# VPS on the other side of that connection
 iptables -I INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 #we will block everything else, and allow all outgoing connections
 iptables -P OUTPUT ACCEPT
@@ -100,12 +102,23 @@ echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 ssh-keygen -t rsa -b 7680 -N "$sshPassphrase" -f "/root/.ssh/server_id_rsa" -C "$(whoami)@$(hostname)-$(date -I)"
 cat /root/.ssh/server_id_rsa.pub >> /root/.ssh/authorized_keys
 # Settings
-find /etc/ssh/sshd_config -type f -exec sed -i 's/Port 22/Port 64/g' {} \;
 find /etc/ssh/sshd_config -type f -exec sed -i 's/#LoginGraceTime 2m/LoginGraceTime 1m/g' {} \;
 find /etc/ssh/sshd_config -type f -exec sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g' {} \;
 find /etc/ssh/sshd_config -type f -exec sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' {} \;
 find /etc/ssh/sshd_config -type f -exec sed -i 's/UsePAM yes/UsePAM no/g' {} \;
 find /etc/ssh/sshd_config -type f -exec sed -i 's/#PermitRootLogin yes/PermitRootLogin without-password/g' {} \;
+echo "Port 64" >> /etc/ssh/sshd_config
+
+# --------------------------
+# STEP 4. Enable nightly updates
+# --------------------------
+echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+echo '!!! Enabling Nightly Updates !!!'
+echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+yum -y install yum-cron
+/etc/init.d/yum-cron start
+chkconfig yum-cron on
+echo ''
 
 echo ''
 echo ''
@@ -114,7 +127,7 @@ echo '----------------------------------------------------'
 echo 'PRIVATE KEY!!!'
 echo 'SAVE THE FOLLOWING AS A KNOWN FILE'
 echo 'CONNECT WITH:'
-echo 'ssh -i /path/to/id_rsa root@0000.0000.0000.0000'
+echo 'ssh -i /path/to/id_rsa -p 64 root@0000.0000.0000.0000'
 echo 'chown user key.isa'
 echo 'chmod 700 key.isa'
 echo '----------------------------------------------------'
@@ -131,3 +144,6 @@ iptables -S
 service sshd restart
 service iptables restart
 
+echo ''
+echo 'DONE!'
+echo ''
