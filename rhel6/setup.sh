@@ -19,6 +19,7 @@ echo '!!! Changing root Password !!!'
 echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 echo "$rootPassword" | passwd root --stdin
 echo ''
+unset $rootPassword
 
 # --------------------------
 # STEP 1. PREREQS
@@ -95,6 +96,8 @@ iptables -P FORWARD DROP
 iptables-save | sudo tee /etc/sysconfig/iptables
 echo ''
 
+unset $interface
+
 # --------------------------
 # STEP 3. Configure SSH and Users
 # --------------------------
@@ -110,6 +113,8 @@ find /etc/ssh/sshd_config -type f -exec sed -i 's/PasswordAuthentication yes/Pas
 find /etc/ssh/sshd_config -type f -exec sed -i 's/UsePAM yes/UsePAM no/g' {} \;
 find /etc/ssh/sshd_config -type f -exec sed -i 's/#PermitRootLogin yes/PermitRootLogin without-password/g' {} \;
 echo "Port 64" >> /etc/ssh/sshd_config
+
+unset $sshPassphrase
 
 # --------------------------
 # STEP 4. Enable nightly updates

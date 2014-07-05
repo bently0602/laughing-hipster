@@ -38,6 +38,7 @@ rm -f /tmp/form.$$
 # set root password
 #-------------------------------------------------
 echo "root:$rootPassword" | chpasswd
+unset $rootPassword
 
 #-------------------------------------------------
 # update and dependencies
@@ -67,6 +68,7 @@ find /etc/ssh/sshd_config -type f -exec sed -i 's/LoginGraceTime 120/LoginGraceT
 find /etc/ssh/sshd_config -type f -exec sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' {} \;
 find /etc/ssh/sshd_config -type f -exec sed -i 's/UsePAM yes/UsePAM no/g' {} \;
 find /etc/ssh/sshd_config -type f -exec sed -i 's/PermitRootLogin yes/PermitRootLogin without-password/g' {} \;
+unset $sshPassphrase
 
 #-------------------------------------------------
 # openvpn setup
