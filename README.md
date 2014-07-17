@@ -1,16 +1,17 @@
 laughing-hipster
 ================
 
-Setup scripts for a fresh centos 6.5 install.
+Setup scripts for a fresh install on CentOS/RHEL 6.5 or Ubuntu 14.04.
 
+Steps
 0. Asks questions for setup
 1. Changes root password
-2. Updates system and installs wget, nano, yum-utils, apache, mod_ssl, ntp, and Development Tools package
+2. Updates system and installs tools
 3. Sets proper date and time
 4. Firewall
 5. Webdav and ssl cert setup
 6. SSHD and cert setup (7680 RSA) with ssh passphrase from setup
-7. OpenVPN Setup (from EPEL, AES-128-CBC, 2048 RSA, uses TLS-AUTH)
+7. OpenVPN Setup (from EPEL on RHEL, AES-128-CBC, 2048 RSA, uses TLS-AUTH)
 
 ##### Notes
 > Creates a single OpenVPN client key called client.key in /etc/openvpn
@@ -29,12 +30,4 @@ cd /
 wget https://raw.githubusercontent.com/bently0602/laughing-hipster/master/script-deploy-remote.sh
 chmod +x script-deploy-remote.sh
 ./script-deploy-remote.sh
-```
-
-###### Desktop and VNC
-```Shell
-cd /
-wget https://raw.githubusercontent.com/bently0602/laughing-hipster/master/script-desktop-vnc.sh
-chmod +x script-desktop-vnc.sh
-./script-desktop-vnc.sh
 ```
