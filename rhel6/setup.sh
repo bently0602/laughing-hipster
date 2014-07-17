@@ -79,7 +79,6 @@ iptables -A INPUT -i lo -j ACCEPT
 # Allow specific ports to the world
 # on the first eth0 interface
 # --------------------------
-# iptables -A INPUT -i $interface -p udp --dport 1132 -j ACCEPT
 iptables -A INPUT -i $interface -p tcp --dport 64 -j ACCEPT
 #Allow ports from specifc IP Addresses
 #iptables -A INPUT -p tcp -s 000.000.000.000 -m tcp --dport 22 -j ACCEPT
