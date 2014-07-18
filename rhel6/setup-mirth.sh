@@ -30,16 +30,16 @@ echo 'Installing Java...'
 echo ''
 
 # NOTE: uncomment if using openjdk
-#yum -y install java-1.7.0-openjdk-devel
+yum -y install java-1.7.0-openjdk-devel
 
 # NOTE: using oracle jdk
-rm -f jdk-7u65-linux-x64.tar.gz
-wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u60-b19/jdk-7u65-linux-x64.tar.gz
-tar zxvf jdk-7u65-linux-x64.tar.gz
-mkdir /usr/java
-mv /software/jdk1.7.0_65/ /usr/java/
-alternatives --install /usr/bin/java java /usr/java/jdk1.7.0_65/jre/bin/java 2000
-alternatives --install /usr/bin/javaws javaws /usr/java/jdk1.7.0_65/jre/bin/javaws 2000
+#rm -f jdk-7u65-linux-x64.tar.gz
+#wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u60-b19/jdk-7u65-linux-x64.tar.gz
+#tar zxvf jdk-7u65-linux-x64.tar.gz
+#mkdir /usr/java
+#mv /software/jdk1.7.0_65/ /usr/java/
+#alternatives --install /usr/bin/java java /usr/java/jdk1.7.0_65/jre/bin/java 2000
+#alternatives --install /usr/bin/javaws javaws /usr/java/jdk1.7.0_65/jre/bin/javaws 2000
 
 echo ''
 echo 'Installing Mirth...'
