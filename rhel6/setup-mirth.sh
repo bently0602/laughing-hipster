@@ -196,7 +196,6 @@ sudo -u postgres psql -c "create database mirthdb;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mirthdb to mirthdb;"
 
 service mirthconnect start
-service iptables restart
 
 echo '~~~~~~~~~~~~'
 echo ''
