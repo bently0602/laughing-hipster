@@ -4,6 +4,7 @@ laughing-hipster
 Setup scripts for a fresh install on CentOS/RHEL 6.5 or Ubuntu 14.04.
 
 Steps
+
 0. Asks questions for setup
 1. Changes root password
 2. Updates system and installs tools
@@ -25,9 +26,8 @@ Steps
 
 ###### Base
 ```Shell
-yum install -y wget
-cd /
-wget https://raw.githubusercontent.com/bently0602/laughing-hipster/master/script-deploy-remote.sh
-chmod +x script-deploy-remote.sh
-./script-deploy-remote.sh
+yum -y install git
+git clone 
+cd laughing-hipster/rhel
+./setup.sh
 ```
