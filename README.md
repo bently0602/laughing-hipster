@@ -27,7 +27,7 @@ Steps
 ###### Base
 ```Shell
 yum -y install git
-git clone 
+git clone https://github.com/bently0602/laughing-hipster.git
 cd laughing-hipster/rhel
 ./setup.sh
 ```
