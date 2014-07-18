@@ -12,13 +12,6 @@ echo ''
 # --------------------------
 # STEP 5. OPENVPN
 # --------------------------
-# https://www.digitalocean.com/community/articles/how-to-setup-and-configure-an-openvpn-server-on-centos-6
-# http://www.garron.me/en/linux/openvpn-server-client-linux-how-to.html
-# http://tipupdate.com/how-to-install-openvpn-on-centos-vps/
-# http://www.openlogic.com/wazi/bid/188052/From-Zero-to-OpenVPN-in-30-Minutes
-# https://community.openvpn.net/openvpn/wiki/Openvpn23ManPage @ INLINE FILE SUPPORT
-# http://allanmcrae.com/2013/09/routing-traffic-with-openvpn/
-
 echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 echo '!!! Installing and Configuring OpenVPN !!!'
 echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'

@@ -21,9 +21,6 @@ mkdir /webdavguest
 # --------------------------
 # STEP 3. WEBDAV
 # --------------------------
-# check http://www.onlamp.com/pub/a/onlamp/2008/03/04/step-by-step-configuring-ssl-under-apache.html
-# check http://ubuntuguide.org/wiki/WebDAV
-# https://www.sslshopper.com/article-how-to-disable-weak-ciphers-and-ssl-2.0-in-apache.html
 echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 echo '!!! Configuring WEBDAV !!!'
 echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
