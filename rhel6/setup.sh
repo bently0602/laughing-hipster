@@ -7,7 +7,7 @@ read -s -p "root pw: " rootPassword
 echo ''
 read -s -p 'ssh passphrase: ' sshPassphrase
 echo ''
-read -s -p 'interface (eth0): ' interface
+read -p 'interface (ex eth0): ' interface
 echo ''
 echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 echo '          STARTING AUTOMATED SETUP SCRIPT'
