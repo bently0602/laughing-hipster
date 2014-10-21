@@ -1,0 +1,17 @@
+#!/bin/bash
+
+port="$1"
+targetip="$2"
+logfile="$3"
+
+echo "$1""@""$2"" Starting service..." >> "$logfile"
+
+while true
+do
+	echo "$1""@""$2"" Starting worker..." >> "$logfile"	
+	socat -dd -ls TCP-LISTEN:"$port",fork TCP:"$targetip":"$port" >> "$logfile"
+  	echo "$1""@""$2"" Worker stopped! Sleeping 5s" >> "$logfile"
+  	sleep 10s
+done
+
+echo "$1""@""$2"" Stopping service..." >> "$logfile"
