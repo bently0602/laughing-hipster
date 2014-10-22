@@ -3,7 +3,7 @@ laughing-hipster
 
 Setup scripts for a fresh install on Ubuntu 14.04.
 
-Server Setup Instructions:
+#### Server Setup Instructions:
 
 1. Run setup.sh for basic setup. (See setup.sh Steps)
 2. Run autoupdates.sh if wanted. 
@@ -11,7 +11,7 @@ Server Setup Instructions:
 	update & dist-upgrade every morning at 3:15am then after restart.
 
 
-setup.sh Steps
+#### setup.sh Steps
 
 0. Asks questions for setup.. root pw, OpenVPN encryption settings, etc...
 1. Changes root password
@@ -23,11 +23,11 @@ setup.sh Steps
 7. Firewall
 8. Restarting services
 
-Server Utilities
+#### Server Utilities
 1. backup.sh is a shortcut for rsync -azP --no-p --no-o between two directories
 2. portforwarder service - see directories readme
 
-### Notes
+#### Notes
 
 > OpenVPN port is 1132. This is the only port open to outside.
 
