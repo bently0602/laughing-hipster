@@ -13,7 +13,7 @@ Setup scripts for a fresh install on Ubuntu 14.04.
 
 #### setup.sh Steps
 
-0. Asks questions for setup.. root pw, OpenVPN encryption settings, etc...
+0. Asks questions for setup. root pw, OpenVPN encryption settings, etc...
 1. Changes root password
 2. Updates system and installs tools
 3. Sets proper date and time
@@ -34,3 +34,4 @@ Setup scripts for a fresh install on Ubuntu 14.04.
 > 10.8.0.1 is the server's address once your connected via VPN.. All ports are open when connected via VPN.
 > Connected clients through VPN start at 10.8.0.2 unless you specify a static ip during setup.sh.
 
+> openvpn server.conf is in etc/openvpn to be picked up by default openvpn daemon.
