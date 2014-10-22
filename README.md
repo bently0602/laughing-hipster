@@ -4,6 +4,7 @@ laughing-hipster
 Setup scripts for a fresh install on Ubuntu 14.04.
 
 Server Setup Instructions:
+
 1. Run setup.sh for basic setup. (See setup.sh Steps)
 2. Run autoupdates.sh if wanted. 
 	update & upgrade every 15 mins except from 3 to 5.
