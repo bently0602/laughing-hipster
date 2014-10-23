@@ -223,6 +223,7 @@ while true; do
 		set -e
 		rm -f "/etc/openvpn/""$clientName"".ovpn"
 		rm -f "/etc/openvpn/staticclients/""$clientName"
+		rm -f "/etc/openvpn/staticclients/DNS:www.""$clientName"".com"
 	elif [ "$clientCertInput" == "add" ]; then
 		echo "Client name cannot contain spaces, special characters besides -, or be named server. "
 		echo "(This will also become the CN in www.clientname.com format): ";
@@ -277,8 +278,10 @@ echo '</tls-auth>' >> "/etc/openvpn/""$clientName"".ovpn"
 		# make the file to put the static IP in
 		if [ "$clientStaticIP" != "*" ]; then
 			echo "ifconfig-push $clientStaticIP 255.255.255.0" >> "/etc/openvpn/staticclients/""$clientName"
+			echo "ifconfig-push $clientStaticIP 255.255.255.0" >> "/etc/openvpn/staticclients/DNS:www.""$clientName"".com"
 		else
 			echo "" >> "/etc/openvpn/staticclients/""$clientName"
+			echo "" >> "/etc/openvpn/staticclients/DNS:www.""$clientName"".com"
 		fi
 		
 		# delete the keys, etc.. we are not using anymore 
