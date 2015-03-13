@@ -24,7 +24,6 @@ ufw default allow outgoing
 #ufw allow from 111.111.111.111 proto tcp to any port 22
 echo '~~~~~Allow IPS~~~~~'
 while true; do
-
 	echo -n "Client IP to allow: [xxx.xxx.xxx.xxx/list/q] ('q' to finish): "; read clientIPInput;
 
 	if [ "$clientIPInput" == "q" ]; then
@@ -32,9 +31,9 @@ while true; do
 	elif [ "$clientIPInput" == "list" ]; then
 	    ufw status
 	else
-        ufw allow from "$clientIPInput" proto tcp to any port 443
-        ufw allow from "$clientIPInput" proto tcp to any port 8080
-    fi
+	        ufw allow from "$clientIPInput" proto tcp to any port 443
+	        ufw allow from "$clientIPInput" proto tcp to any port 8080
+    	fi
     
 service ssh restart
 
