@@ -54,6 +54,8 @@ every time. I routinely white wash my machines with these scripts.
 	daemon.
 
 #### Development Machine Setup Note:
+SSH is also protect by google authenticator so make sure you have that setup on a phone or similar before 
+running this (although the default port 22 is not changed it is blocked by the firewall anyway).
 The script will prompt for IPs to allow access to the machine.
 If using in coordination with the server VPN script included you should 
 probably include the IP of that machine along with any home or work IPs.
