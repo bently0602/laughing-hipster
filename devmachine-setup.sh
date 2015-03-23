@@ -2,7 +2,8 @@
 
 apt-get -y update
 apt-get -y upgrade
-apt-get -y install libpam-google-authenticator git nodejs npm nodejs-legacy nginx nginx-extras openssl
+apt-get -y install libpam-google-authenticator git nodejs npm nodejs-legacy nginx nginx-extras openssl tmux
+apt-get -y install build-essential python-dev
 
 # -------------------------------------------------
 # setup firewall and google authenticator for ssh
@@ -33,6 +34,9 @@ while true; do
 	else
 	        ufw allow from "$clientIPInput" proto tcp to any port 443
 	        ufw allow from "$clientIPInput" proto tcp to any port 8080
+	        ufw allow from "$clientIPInput" proto tcp to any port 8888
+	        ufw allow from "$clientIPInput" proto tcp to any port 80
+	        ufw allow from "$clientIPInput" proto tcp to any port 22
     	fi
     
 service ssh restart
@@ -55,19 +59,27 @@ ln -s /software/gitr/gitr /usr/bin/gitr
 cd core
 ./scripts/install-sdk.sh
 
+mkdir /software/notebooks
+pip install "ipython[notebook]"
+
 # -------------------------------------------------
 # setup nginx proxy
 # -------------------------------------------------
 usermod -a -G shadow www-data
 
+# store all the certs here
 mkdir -p /etc/nginx/ssl
 cd /etc/nginx/ssl
 
+# for nginx
 openssl genrsa -des3 -out server.key 2048
 openssl req -new -key server.key -out server.csr
 cp server.key server.key.bak
 openssl rsa -in server.key.bak -out server.key
 openssl x509 -req -in server.csr -signkey server.key -out server.crt
+
+# for ipython notebook
+openssl req -x509 -nodes -newkey rsa:2048 -keyout ipython.pem -out ipython.pem
 
 echo '
 server {
@@ -117,6 +129,7 @@ server {
 }
 ' >> /etc/nginx/conf.d/cloud9.conf
 
+# for aux
 echo '
 server {
 	listen 8080;
@@ -179,13 +192,27 @@ chmod +x /runcloud9.sh
 echo '
 #! /bin/bash
 node /software/tty.js/bin/tty.js --port 8081
-' >> /runcloud9.sh
-chmod +x /runcloud9.sh
+' >> /runtty.sh
+chmod +x /runtty.sh
 
+echo '
+from IPython.lib import passwd
+import os
+print "Enter the password for access to notebooks."
+x = passwd()
+os.system("cd /software/notebooks && ipython notebook --port 8888 --certfile=/etc/nginx/ssl/ipython.pem --NotebookApp.password="+ x + " --Notebook.App.notebook_dir=/software/notebooks --NotebookApp.ip=\"*\"")
+' >> /ipythonnotebook.py
+
+echo '
+#!/bin/bash
+
+tar -zcvf /software.tar.gz ./
+' >> /software/archive.sh
 
 echo 'shutdown -r now recommended'
-echo '/runcloud9.sh runs cloud 9'
+echo '/runcloud9.sh runs cloud 9 on https://:443'
 echo 'an auxillary http proxy is on port 8080 pointed to 8081'
+echo 'ipython notebook server is running on https://:8888'
 
 service nginx restart
 service ssh restart
