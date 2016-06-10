@@ -306,7 +306,10 @@ echo '~~~~~Done Building Client Certs~~~~~'
 
 echo "iptables-persistent iptables-persistent/autosave_v6 boolean false" | debconf-set-selections
 echo "iptables-persistent iptables-persistent/autosave_v4 boolean false" | debconf-set-selections
-apt-get -y install iptables-persistent
+ 
+apt-get install -y iptables-persistent
+invoke-rc.d netfilter-persistent save
+service netfilter-persistent stop
 
 # ************************************************
 # Start from clean slate.
@@ -384,6 +387,9 @@ ip6tables-save > /etc/iptables/rules.v6
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
 
+echo " * Restarting and Reloading iptables-persistent..."
+service netfilter-persistent start
+	
 #-------------------------------------------------
 # show information
 #-------------------------------------------------
@@ -437,11 +443,7 @@ if [ "$cleanupAndRestart" == "y" ]; then
 	# turn on services and cleanup
 	#-------------------------------------------------
 	service openvpn start
-
-	echo " * Restarting and Reloading iptables-persistent..."
-	service iptables-persistent reload
-	service iptables-persistent restart
-
+	
 	if [ "$createSSHKey" == "y" ]; then
 		service ssh restart
 	fi
