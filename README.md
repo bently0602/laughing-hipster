@@ -1,7 +1,7 @@
 laughing-hipster
 ================
 
-A collection of scripts for a Ubuntu 14.04 install.
+A collection of scripts for a Ubuntu 16.04 install.
 Includes a script to automate the creation of a VPN server that allows inner 
 connected client communication (connected client A can communicate directly over 
 a secure channel to conencted client B), a remote devmachine, 
