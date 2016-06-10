@@ -108,6 +108,7 @@ key server.key
 dh dh.pem
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist /etc/openvpn/ipp.txt
+client-config-dir /etc/openvpn/staticclients
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
@@ -257,9 +258,9 @@ remote-cert-tls server" >> "/etc/openvpn/""$clientName"".ovpn"
 
 # add static ip to clients config
 # ...and later add to the CN config on the server as a push
-if [ "$clientStaticIP" != "*" ]; then
-	echo "ifconfig $clientStaticIP 255.255.255.0" >> "/etc/openvpn/""$clientName"".ovpn"
-fi
+#if [ "$clientStaticIP" != "*" ]; then
+#	echo "ifconfig $clientStaticIP 255.255.255.0" >> "/etc/openvpn/""$clientName"".ovpn"
+#fi
 
 echo "$AUTHSECTION" >> "/etc/openvpn/""$clientName"".ovpn"
 echo "$SHAREDSECTION" >> "/etc/openvpn/""$clientName"".ovpn"
