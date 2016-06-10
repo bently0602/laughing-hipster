@@ -109,6 +109,7 @@ dh dh.pem
 server 10.8.0.0 255.255.255.0
 ifconfig-pool-persist /etc/openvpn/ipp.txt
 client-config-dir /etc/openvpn/staticclients
+management localhost 7505
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
