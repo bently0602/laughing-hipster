@@ -254,6 +254,13 @@ verb 3
 redirect-gateway
 key-direction 1
 remote-cert-tls server" >> "/etc/openvpn/""$clientName"".ovpn"
+
+# add static ip to clients config
+# ...and later add to the CN config on the server as a push
+if [ "$clientStaticIP" != "*" ]; then
+	echo "ifconfig $clientStaticIP 255.255.255.0" >> "/etc/openvpn/""$clientName"".ovpn"
+fi
+
 echo "$AUTHSECTION" >> "/etc/openvpn/""$clientName"".ovpn"
 echo "$SHAREDSECTION" >> "/etc/openvpn/""$clientName"".ovpn"
 
@@ -276,6 +283,8 @@ cat /etc/openvpn/ta.key >> "/etc/openvpn/""$clientName"".ovpn"
 echo '</tls-auth>' >> "/etc/openvpn/""$clientName"".ovpn"
 
 		# make the file to put the static IP in
+		# also doubles for CN specific config options if needed
+		# in the future
 		if [ "$clientStaticIP" != "*" ]; then
 			echo "ifconfig-push $clientStaticIP 255.255.255.0" >> "/etc/openvpn/staticclients/""$clientName"
 			echo "ifconfig-push $clientStaticIP 255.255.255.0" >> "/etc/openvpn/staticclients/DNS:www.""$clientName"".com"
