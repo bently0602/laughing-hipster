@@ -4,7 +4,7 @@ set -e
 
 #
 # SETUP SCRIPT
-# - tested on ubuntu 14.04
+# - tested on ubuntu 16.04
 # - required to be ran as root
 #
 
@@ -18,7 +18,7 @@ fi
 
 exampleExternalIPAddress=`ifconfig 'eth0' | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
 
-dialog --clear --backtitle "Ubuntu 14.04 Setup Script" --title "Setup Values" --form "\nPlease fill in the following values:" 25 60 16 "ROOT password:" 1 1 "" 1 25 25 30 "INET Facing IP(eth0):" 2 1 $exampleExternalIPAddress 2 25 25 30 "External Interface:" 3 1 "eth0" 3 25 25 30 "SSH Pass( > 3 chars):" 4 1 "" 4 25 25 30 "SSH Key(y/n):" 5 1 "n" 5 25 25 30 "Cipher:" 6 1 "AES-256-CBC" 6 25 25 30 "TLS Cipher:" 7 1 "TLS-DHE-RSA-WITH-AES-256-CBC-SHA" 7 25 25 40 "Auth Digest:" 8 1 "SHA256" 8 25 25 30 "Key Size:" 9 1 "2048" 9 25 25 30 2>/tmp/form.$$
+dialog --clear --backtitle "Ubuntu 16.04 Setup Script" --title "Setup Values" --form "\nPlease fill in the following values:" 25 60 16 "ROOT password:" 1 1 "" 1 25 25 30 "INET Facing IP(eth0):" 2 1 $exampleExternalIPAddress 2 25 25 30 "External Interface:" 3 1 "eth0" 3 25 25 30 "SSH Pass( > 3 chars):" 4 1 "" 4 25 25 30 "SSH Key(y/n):" 5 1 "n" 5 25 25 30 "Cipher:" 6 1 "AES-256-CBC" 6 25 25 30 "TLS Cipher:" 7 1 "TLS-DHE-RSA-WITH-AES-256-CBC-SHA" 7 25 25 40 "Auth Digest:" 8 1 "SHA256" 8 25 25 30 "Key Size:" 9 1 "2048" 9 25 25 30 2>/tmp/form.$$
 
 rootPassword=`sed -n '1,1p' /tmp/form.$$`
 inetFacingIPaddress=`sed -n '2,2p' /tmp/form.$$`
@@ -306,7 +306,10 @@ echo '~~~~~Done Building Client Certs~~~~~'
 
 echo "iptables-persistent iptables-persistent/autosave_v6 boolean false" | debconf-set-selections
 echo "iptables-persistent iptables-persistent/autosave_v4 boolean false" | debconf-set-selections
-apt-get -y install iptables-persistent
+ 
+apt-get install -y iptables-persistent
+invoke-rc.d netfilter-persistent save
+service netfilter-persistent stop
 
 # ************************************************
 # Start from clean slate.
@@ -384,6 +387,9 @@ ip6tables-save > /etc/iptables/rules.v6
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
 
+echo " * Restarting and Reloading iptables-persistent..."
+service netfilter-persistent start
+	
 #-------------------------------------------------
 # show information
 #-------------------------------------------------
@@ -437,11 +443,7 @@ if [ "$cleanupAndRestart" == "y" ]; then
 	# turn on services and cleanup
 	#-------------------------------------------------
 	service openvpn start
-
-	echo " * Restarting and Reloading iptables-persistent..."
-	service iptables-persistent reload
-	service iptables-persistent restart
-
+	
 	if [ "$createSSHKey" == "y" ]; then
 		service ssh restart
 	fi
