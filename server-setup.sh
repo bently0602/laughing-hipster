@@ -106,10 +106,17 @@ ca ca.crt
 cert server.crt
 key server.key
 dh dh.pem
-server 10.8.0.0 255.255.255.0
-ifconfig-pool-persist /etc/openvpn/ipp.txt
+# server 10.8.0.0 255.255.255.0
+mode server
+tls-server
+# ifconfig-pool-persist /etc/openvpn/ipp.txt
 client-config-dir /etc/openvpn/staticclients
 management localhost 7505
+topology "subnet"
+push "topology subnet"
+ifconfig 10.8.0.1 255.255.255.0
+push "route-gateway 10.8.0.1"
+ifconfig-pool 10.8.0.2 10.8.0.199 255.255.255.0
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
@@ -236,7 +243,7 @@ while true; do
 		fi
 
 		echo "Does this client need"/etc/openvpn/staticclients/""$clientName""/etc/openvpn/staticclients/""$clientName" a static ip address?"
-		echo -n "[* is no; any other should be in 10.8.0.0/255.255.255.0 i.e. 10.8.0.5]: "; read clientStaticIP;
+		echo -n "[* is no; any other should be in 10.8.0.0/255.255.255.0 10.8.0.201 and up i.e. 10.8.0.210]: "; read clientStaticIP;
 		# at a later date run source ./vars & ./xtravars before adding or removing clients
 		echo "~~~~~Building Client Cert for $clientName~~~~~"
 		# each client certificate needs a unique CommonName
