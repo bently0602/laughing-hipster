@@ -12,6 +12,10 @@ running. If it breaks you machine I dont assume any resonablilty for anything it
 does. That said it works perfectly for me most every time.
 I routinely white wash my machines with these scripts.
 
+Notes:
+- no IPV6, need to disable and force only IPV4 to route all the traffic through the VPN currently
+- iOS needs to have force AES-CBC enabled through Settings/OpenVPN
+
 #### Server Setup Instructions (server-setup.sh):
 
 1. Run server-setup.sh for basic setup.
