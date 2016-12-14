@@ -34,7 +34,7 @@ function CookieLib.add_cookie_simple(key, value)
   local cookie_string = key .. "=" .. value .. "; "
   cookie_string = cookie_string.."Path=/; "
   cookie_string = cookie_string.."Expires=" .. ngx.cookie_time(ngx.time() + Settings["invalid_timeout"]) .. "; "
-  --cookie_string = cookie_string.."Secure; "
+  cookie_string = cookie_string.."Secure; "
   cookie_string = cookie_string.."Samesite=strict "
   CookieLib.add_cookie(cookie_string)
 end
