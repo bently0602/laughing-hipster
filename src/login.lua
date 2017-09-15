@@ -136,9 +136,9 @@ input[type=text], input[type=password] {
 
 local login_html_body = [[
 <form action="/login" method="post">
-<input type="text" name="username" placeholder="username" value="">
+<input type="text" name="username" placeholder="username" autocomplete="off" value="">
 <input type="password" name="password" placeholder="password" value="">
-<input type="text" name="auth_code" placeholder="auth_code" value="">
+<input type="text" name="auth_code" placeholder="auth_code" autocomplete="off" value="">
 <input type="submit" value="submit">
 </form>
 ]]
